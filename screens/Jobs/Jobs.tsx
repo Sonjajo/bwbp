@@ -99,16 +99,46 @@ export class JobsScreen extends React.Component<JobsScreenProps, JobsScreenState
 
   /**
    * TODO: Write filterJobs function that updates the components' state with jobs that align with the users' weekly schedule.
+   @source https://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-element-of-another-array-in-javascript 
+   @source https://flaviocopes.com/how-to-uppercase-first-letter-javascript/ 
    */
   filterJobs = (jobs: JobRecord[], availability: Availability): void => {
     // Step 0: Clone the jobs input
     const newJobs: JobRecord[] = cloneDeep(jobs);
-    console.log(newJobs, availability);
+    //console.log(newJobs, availability);
 
     // Step 1: Remove jobs where the schedule doesn't align with the users' availability.
+    /*
+    1) Filter through Availability and output unavailable days to a string array.
+    2) Check if each job's schedule contains any of the unavailable days. 
+    3) Filter them out using new JobRecord property, job.keep (see interface.ts) 
+    */
+    
+    // This loop should return two a string array of days NOT available to work.
+    const NotAvail: string[] = [];
+    for (const[day, bool] of Object.entries(availability)) {
+      if (bool == false) {
+        // capitalizes the day before pushing it so the filter function works
+        const dayCap = day.charAt(0).toUpperCase() + day.slice(1);
+        NotAvail.push(dayCap);
+      }
+    }
+    for (let job of newJobs) {
+      // init job.keep to true
+      job.keep = true;
 
+      // check if this job's schedule contains any of the NotAvail days
+      if (job.schedule.some(day => NotAvail.indexOf(day) !== -1)) {
+        console.log('entered')
+        job.keep = false;
+      }
+    }
+
+    // New array that holds filtered newJobs
+    const newJobs2 = newJobs.filter(job => job.keep == true);
+    
     // Step 2: Save into state
-    this.setState({ jobs: newJobs });
+    this.setState({ jobs: newJobs2 });
   };
 
   getStatus = (jobs: JobRecord[]): Status => {

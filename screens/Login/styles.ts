@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { Colors } from '@assets/Colors';
 
+// * Gives access to entire screen object
 const win = Dimensions.get('window');
 
 export const ImageContainer = styled.View`
@@ -9,9 +10,10 @@ export const ImageContainer = styled.View`
   flex: 0.95;
 `;
 
+// Added a height value to correct logo size.
 export const LoginImg = styled.Image`
   width: ${win.height * 1.4};
-  height: null;
+  height: ${win.width * 1.2};
   aspect-ratio: 1;
 `;
 
