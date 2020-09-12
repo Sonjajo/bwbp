@@ -49,6 +49,7 @@ export interface ClassEventRecord extends Record {
   endTime: string;
 }
 
+// added keep property on line 66 to be able to filter and update newJobs
 export interface JobRecord extends Record {
   storeName: string;
   jobName: string;
@@ -62,6 +63,7 @@ export interface JobRecord extends Record {
   timeOfDay: string[];
   filled: boolean;
   users: string[];
+  keep: boolean;
 }
 
 /* Messages */
